@@ -102,6 +102,17 @@ mat4& mat4::translate(float x, float y, float z){
     );
 }
 
+mat4& mat4::operator *(const vec4& rhs){
+    mat4 lhs = *this;
+    float vec[4] = { rhs.x, rhs.y, rhs.z, rhs.w };
+    for(int i=0, r=0; r<4; r++)
+    for(int c=0; c<4; c++, i++){
+        this->data[i] = 0.0f;
+        for(int n=0; n<4; n++) this->data[i] += lhs.data[r*4+n] * vec[n];
+    }
+    return *this;
+}
+
 mat4& mat4::operator *(const mat4& rhs){
     mat4 lhs = *this;
     for(int i=0, r=0; r<4; r++)
@@ -162,20 +173,17 @@ float mat4::minor(const mat4& mat, int row, int col){
     return ret.determinant();
 }
 
-#define DOT(a) -vec3::dot(a##axis, eye)
 mat4 mat4::lookAt(vec3 eye, vec3 target, vec3 up){
     vec3 f = vec3::normalize(vec3::sub(eye, target));
-    vec3 l = vec3::cross(up, f);
-    vec3 u = vec3::cross(f, l);
-    mat4 MR(
-        l.x,l.y,l.z,0,
-        u.x,u.y,u.z,0,
-        f.x,f.y,f.z,0,
-        eye.x, eye.y, eye.z,1
+    vec3 r = vec3::cross(up, f); 
+    vec3 u = vec3::cross(f, r); 
+    return mat4(
+          r.x,   r.y,   r.z, 0,
+          u.x,   u.y,   u.z, 0,
+          f.x,   f.y,   f.z, 0,
+        eye.x, eye.y, eye.z, 0
     );
-    return MR;
 }
-#undef DOT
 
 mat4 mat4::perspective(float fovRad, float aspect, float near, float far){
     float b = 1.0f / std::tan(fovRad / 2.0f),
