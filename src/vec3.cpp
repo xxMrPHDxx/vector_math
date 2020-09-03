@@ -20,6 +20,14 @@ vec3::vec3(const vec3& o){
     this->z = o.z;
 }
 
+bool vec3::operator ==(const vec3& o){
+    return this->x == o.x && this->y == o.y && this->z == o.z;
+}
+
+bool vec3::operator !=(const vec3& o){
+    return !(*this == o);
+}
+
 std::ostream& operator <<(std::ostream& out, const vec3& vec){
     return out << "vec3(" << vec.x << ", " << vec.y << ", " << vec.z << ")";
 }

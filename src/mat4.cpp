@@ -1,6 +1,6 @@
 #include "mat4.hpp"
 #include "mat3.hpp"
-#include "vec3.hpp"
+#include <cmath>
 
 #define DET(m, a, b, c, d) (m[a]*m[d]-m[b]*m[c])
 #define DET3(mat, r, c) mat4::minor(mat, r, c)
@@ -36,6 +36,80 @@ float mat4::determinant(){
     float dc = mat3(e,f,h,i,j,l,m,n,p).determinant();
     float dd = mat3(e,f,g,i,j,k,m,n,o).determinant();
     return a*da - b*db + c*dc - d*dd;
+}
+
+mat4& mat4::rotate(float xRad, float yRad, float zRad){
+    float sx = std::sin(xRad), cx = std::cos(xRad);
+    float sy = std::sin(yRad), cy = std::cos(yRad);
+    float sz = std::sin(zRad), cz = std::cos(zRad);
+    return (*this) * mat4(
+                 cy*cz,         -sz*cy,     sy, 0,
+              sx*sy*cz, cx*cz-sx*sy*sz, -sx*cy, 0,
+        sx*sz-sy*cx*cz, sx*cz+sy*sz*cx,  cx*cy, 0,
+                     0,              0,      0, 1
+    );
+}
+
+mat4& mat4::rotateX(float rad){
+    float s = std::sin(rad), c = std::cos(rad);
+    return (*this) * mat4(
+        1, 0, 0, 0,
+        0, c,-s, 0,
+        0, s, c, 0,
+        0, 0, 0, 1
+    );
+}
+
+mat4& mat4::rotateY(float rad){
+    float s = std::sin(rad), c = std::cos(rad);
+    return (*this) * mat4(
+         c, 0, s, 0,
+         0, 1, 0, 0,
+        -s, 0, c, 0,
+         0, 0, 0, 1
+    );
+}
+
+mat4& mat4::rotateZ(float rad){
+    float s = std::sin(rad), c = std::cos(rad);
+    return (*this) * mat4(
+        c,-s, 0, 0,
+        s, c, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
+    );
+}
+
+mat4& mat4::scale(float xScl, float yScl, float zScl){
+    return (*this) * mat4(
+        xScl,    0,    0, 0,
+           0, yScl,    0, 0,
+           0,    0, zScl, 0,
+           0,    0,    0, 1
+    );
+}
+
+mat4& mat4::scale(float scale){
+    return this->scale(scale, scale, scale);
+}
+
+mat4& mat4::translate(float x, float y, float z){
+    return (*this) * mat4(
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        x, y, z, 1
+    );
+}
+
+mat4& mat4::operator *(const mat4& rhs){
+    mat4 lhs = *this;
+    for(int i=0, r=0; r<4; r++)
+    for(int c=0; c<4; c++, i++){
+        this->data[i] = 0.0f;
+        for(int n=0; n<4; n++) this->data[i] += lhs.data[r*4+n] * rhs.data[n*4+c];
+    }
+    return *this;
 }
 
 std::ostream& operator <<(std::ostream& out, const mat4& mat){
@@ -89,18 +163,33 @@ float mat4::minor(const mat4& mat, int row, int col){
 }
 
 #define DOT(a) -vec3::dot(a##axis, eye)
-mat4 mat4::lookAt(vec3 eye, vec3 center, vec3 up){
-    vec3 zaxis = vec3::normalize(vec3::sub(center, eye));
-    vec3 xaxis = vec3::normalize(vec3::cross(up, zaxis));
-    vec3 yaxis = vec3::cross(zaxis, xaxis);
-    return mat4(
-        xaxis.x, yaxis.x, zaxis.x, 0,
-        xaxis.y, yaxis.y, zaxis.y, 0,
-        xaxis.z, yaxis.z, zaxis.z, 0,
-        +DOT(x), -DOT(y), +DOT(z), 1
+mat4 mat4::lookAt(vec3 eye, vec3 target, vec3 up){
+    vec3 f = vec3::normalize(vec3::sub(eye, target));
+    vec3 l = vec3::cross(up, f);
+    vec3 u = vec3::cross(f, l);
+    mat4 MR(
+        l.x,l.y,l.z,0,
+        u.x,u.y,u.z,0,
+        f.x,f.y,f.z,0,
+        eye.x, eye.y, eye.z,1
     );
+    return MR;
 }
 #undef DOT
+
+mat4 mat4::perspective(float fovRad, float aspect, float near, float far){
+    float b = 1.0f / std::tan(fovRad / 2.0f),
+        a = b / aspect,
+        fan = far + near, fsn = far - near,
+        c = -fan / fsn,
+        d = -2 * far * near / fsn;
+    return mat4(
+        a, 0, 0, 0,
+        0, b, 0, 0,
+        0, 0, c, d,
+        0, 0,-1, 0
+    );
+}
 
 mat4 mat4::transpose(const mat4& mat){
     mat4 ret;

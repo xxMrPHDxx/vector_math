@@ -9,6 +9,8 @@ public:
     vec3();
     vec3(float, float, float);
     vec3(const vec3&);
+    bool operator ==(const vec3&);
+    bool operator !=(const vec3&);
     friend std::ostream& operator <<(std::ostream&, const vec3&);
     static vec3 add(const vec3&, const vec3&);
     static vec3 cross(const vec3&, const vec3&);

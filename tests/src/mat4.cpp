@@ -1,10 +1,13 @@
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 #include "mat4.hpp"
 #include "vec3.hpp"
 
 #define DEBUG(msg, ...) std::cout << msg << "\n"; __VA_ARGS__; std::cout << "=============================================\n"
 #define LOG(obj) std::cout << obj << "\n"
+
+#define PI M_PI
 
 int main(){
     // Default constructor
@@ -43,8 +46,34 @@ int main(){
     mat4 m4 = mat4::lookAt(vec3(0,0,-8),vec3(0,0,0),vec3(0,1,0));
     DEBUG("Look at mat4: mat4::lookAt([0,0,-8],[0,0,0],[0,1,0])", LOG(m4));
 
+    // Matrix multiply
+    DEBUG("Matrix multiply: m3 * m3", LOG(m3 * m3));
+
+    // Matrix translate
+    DEBUG(
+        "Matrix translate: mat4::identity().translate(1,2,3)", 
+        LOG(mat4::identity().translate(1,2,3))
+    );
+
+    // Matrix rotateX
+    DEBUG(
+        "Matrix rotateX: mat4::identity().rotateX(PI)", 
+        LOG(mat4::identity().rotateX(PI))
+    );
+
+    // Matrix rotateY
+    DEBUG(
+        "Matrix rotateY: mat4::identity().rotateY(PI)", 
+        LOG(mat4::identity().rotateY(PI))
+    );
+
+    // Matrix rotateZ
+    DEBUG(
+        "Matrix rotateZ: mat4::identity().rotateZ(PI)", 
+        LOG(mat4::identity().rotateZ(PI))
+    );
+
     // Invert
     std::cout << std::fixed << std::setprecision(4);
     DEBUG("Invert: mat4::invert(m4)", LOG(mat4::invert(m4)));
-    std::cout << std::scientific;
 }
