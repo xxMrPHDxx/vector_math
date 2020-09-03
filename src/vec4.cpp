@@ -11,3 +11,7 @@ vec4::vec4(float x, float y, float z, float w){
 vec4::vec4(const vec4& o){
     this->x = o.x; this->y = o.y; this->z = o.z; this->w = o.w;
 }
+
+std::ostream& operator <<(std::ostream& out, const vec4& vec){
+    return out << "vec4(" << vec.x << ", " << vec.y << ", " << vec.z << ", " << vec.w << ")";
+}

@@ -102,15 +102,14 @@ mat4& mat4::translate(float x, float y, float z){
     );
 }
 
-mat4& mat4::operator *(const vec4& rhs){
-    mat4 lhs = *this;
-    float vec[4] = { rhs.x, rhs.y, rhs.z, rhs.w };
-    for(int i=0, r=0; r<4; r++)
-    for(int c=0; c<4; c++, i++){
-        this->data[i] = 0.0f;
-        for(int n=0; n<4; n++) this->data[i] += lhs.data[r*4+n] * vec[n];
-    }
-    return *this;
+vec4 mat4::operator *(const vec4& rhs){
+    mat4& self = *this;
+    vec4 ret;
+    ret.x = self[ 0]*rhs.x + self[ 1]*rhs.y + self[ 2]*rhs.z + self[ 3]*rhs.w;
+    ret.y = self[ 4]*rhs.x + self[ 5]*rhs.y + self[ 6]*rhs.z + self[ 7]*rhs.w;
+    ret.z = self[ 8]*rhs.x + self[ 9]*rhs.y + self[10]*rhs.z + self[11]*rhs.w;
+    ret.w = self[12]*rhs.x + self[13]*rhs.y + self[14]*rhs.z + self[15]*rhs.w;
+    return ret;
 }
 
 mat4& mat4::operator *(const mat4& rhs){

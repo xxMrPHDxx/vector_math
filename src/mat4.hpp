@@ -24,7 +24,7 @@ public:
     mat4& scale(float, float, float);
     mat4& scale(float);
     mat4& translate(float, float, float);
-    mat4& operator *(const vec4&);
+    vec4 operator *(const vec4&);
     mat4& operator *(const mat4&);
     float& operator [](const int idx){ return this->data[idx]; }
     friend std::ostream& operator <<(std::ostream&, const mat4&);
