@@ -88,6 +88,7 @@ float mat4::minor(const mat4& mat, int row, int col){
     return ret.determinant();
 }
 
+#define DOT(a) -vec3::dot(a##axis, eye)
 mat4 mat4::lookAt(vec3 eye, vec3 center, vec3 up){
     vec3 zaxis = vec3::normalize(vec3::sub(center, eye));
     vec3 xaxis = vec3::normalize(vec3::cross(up, zaxis));
@@ -96,12 +97,10 @@ mat4 mat4::lookAt(vec3 eye, vec3 center, vec3 up){
         xaxis.x, yaxis.x, zaxis.x, 0,
         xaxis.y, yaxis.y, zaxis.y, 0,
         xaxis.z, yaxis.z, zaxis.z, 0,
-        xaxis.x*eye.x+xaxis.y*eye.y+xaxis.z*eye.z,
-        yaxis.x*eye.x+yaxis.y*eye.y+yaxis.z*eye.z,
-        zaxis.x*eye.x+zaxis.y*eye.y+zaxis.z*eye.z,
-        1
+        +DOT(x), -DOT(y), +DOT(z), 1
     );
 }
+#undef DOT
 
 mat4 mat4::transpose(const mat4& mat){
     mat4 ret;

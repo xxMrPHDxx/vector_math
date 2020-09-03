@@ -37,11 +37,15 @@ vec3 vec3::cross(const vec3& a, const vec3& b){
 }
 
 float vec3::dot(const vec3& a, const vec3& b){
-    return std::sqrt(a.x*b.x + a.y*b.y + a.z*b.z);
+    return a.x*b.x + a.y*b.y + a.z*b.z;
+}
+
+float vec3::mag(const vec3& v){
+    return std::sqrt(vec3::dot(v, v));
 }
 
 vec3 vec3::normalize(const vec3& v){
-    float mag = vec3::dot(v, v);
+    float mag = vec3::mag(v);
     if(std::abs(mag) < EPSILON) return vec3(0, 0, 0);
     mag = 1.0f / mag;
     return vec3(v.x*mag, v.y*mag, v.z*mag);

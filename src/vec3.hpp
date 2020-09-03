@@ -13,6 +13,7 @@ public:
     static vec3 add(const vec3&, const vec3&);
     static vec3 cross(const vec3&, const vec3&);
     static float dot(const vec3&, const vec3&);
+    static float mag(const vec3&);
     static vec3 normalize(const vec3&);
     static vec3 sub(const vec3&, const vec3&);
 };
