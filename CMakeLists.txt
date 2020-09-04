@@ -19,3 +19,8 @@ install(
     FILES_MATCHING PATTERN "*.hpp"
 )
 install(TARGETS vector_math DESTINATION lib)
+
+include( CTest )
+add_test( mat3 tests/mat3_test )
+add_test( mat4 tests/mat4_test )
+add_test( vec3 tests/vec3_test )

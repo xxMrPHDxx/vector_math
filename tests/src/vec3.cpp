@@ -1,8 +1,7 @@
 #include <iostream>
-#include "vec3.hpp"
 
-#define DEBUG(msg, ...) std::cout << msg << ": "; __VA_ARGS__; std::cout << "\n"
-#define LOG(obj) std::cout << (obj)
+#include "test.hpp"
+#include "vec3.hpp"
 
 int main(){
     // Default constructor
@@ -36,8 +35,13 @@ int main(){
     // Normalize
     vec3 norm = vec3::normalize(v2);
     DEBUG("Normalize", LOG(norm));
+    ASSERT("Failed to normalize!", norm.x*norm.x+norm.y*norm.y+norm.z*norm.z <= 1);
 
     // Subtract
     vec3 sub = vec3::sub(v2, v3);
     DEBUG("Subtract", LOG(sub));
+
+    ASSERT_EQUALS("sub.x should be 0", sub.x, 0);
+    ASSERT_EQUALS("sub.y should be 0", sub.y, 0);
+    ASSERT_EQUALS("sub.z should be 0", sub.z, 0);
 }

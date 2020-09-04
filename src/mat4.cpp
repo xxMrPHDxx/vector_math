@@ -147,10 +147,6 @@ mat4 mat4::invert(mat4& mat){
 }
 
 mat4 mat4::minor(const mat4& mat){
-    float a = mat.data[ 0], b = mat.data[ 1], c = mat.data[ 2], d = mat.data[ 3];
-    float e = mat.data[ 4], f = mat.data[ 5], g = mat.data[ 6], h = mat.data[ 7];
-    float i = mat.data[ 8], j = mat.data[ 9], k = mat.data[10], l = mat.data[11];
-    float m = mat.data[12], n = mat.data[13], o = mat.data[14], p = mat.data[15];
     return mat4(
         DET3(mat,0,0), DET3(mat,0,1), DET3(mat,0,2), DET3(mat,0,3),
         DET3(mat,1,0), DET3(mat,1,1), DET3(mat,1,2), DET3(mat,1,3),
