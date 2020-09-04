@@ -1,6 +1,8 @@
 .vscode/
 CMakeFiles/
-cmake_install.cmake
+Testing/
+*.cmake
+*.tcl
 CMakeCache.txt
 libvector_math.a
 Makefile
