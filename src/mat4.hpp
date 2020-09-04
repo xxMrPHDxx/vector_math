@@ -1,6 +1,10 @@
 #ifndef MAT4_HPP
 #define MAT4_HPP
 
+#ifdef minor
+#undef minor
+#endif
+
 #include <ostream>
 
 #include "vec3.hpp"
@@ -8,6 +12,7 @@
 
 class mat4 {
 public:
+    float data[16];
     mat4();
     mat4(
         float,float,float,float,
@@ -34,7 +39,6 @@ public:
     static mat4 perspective(float, float, float, float);
     static mat4 transpose(const mat4&);
 private:
-    float data[16];
     static mat4 minor(const mat4&);
     static float minor(const mat4&, int, int);
 };

@@ -3,8 +3,13 @@
 
 #include <ostream>
 
+#ifdef minor
+#undef minor
+#endif
+
 class mat3 {
 public:
+    float data[9];
     mat3();
     mat3(
         float, float, float,
@@ -19,7 +24,6 @@ public:
     static mat3 invert(mat3&);
     static mat3 transpose(const mat3&);
 private:
-    float data[9];
     static mat3 minor(const mat3&);
 };
 
