@@ -2,6 +2,7 @@
 #define MAT3_HPP
 
 #include <ostream>
+#include <sys/types.h>
 
 #ifdef minor
 #undef minor

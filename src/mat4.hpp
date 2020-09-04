@@ -1,11 +1,12 @@
 #ifndef MAT4_HPP
 #define MAT4_HPP
 
+#include <ostream>
+#include <sys/types.h>
+
 #ifdef minor
 #undef minor
 #endif
-
-#include <ostream>
 
 #include "vec3.hpp"
 #include "vec4.hpp"
